@@ -55,7 +55,10 @@ const Community: NextPage = () => {
           </div>
         </div>
       ))}
-      <button className="fixed hover:bg-orange-500 transition-colors cursor-pointer bottom-24 right-5 bg-orange-400 rounded-full p-4 text-white shadow-xl">
+      <button
+        className="fixed hover:bg-orange-500 transition-colors cursor-pointer bottom-24 right-5 bg-orange-400 rounded-full p-4 text-white shadow-xl"
+        title="move_to_write"
+      >
         <svg
           className="w-6 h-6"
           fill="none"
