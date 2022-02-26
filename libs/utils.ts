@@ -27,7 +27,10 @@ export function hasSubUrl(pathname: string) {
 
 export function footerHidden(pathname: string) {
   let hidden = false;
-  if (pathname.startsWith("/chats") && hasSubUrl(pathname)) {
+  if (
+    (pathname.startsWith("/chats") || pathname.startsWith("/live")) &&
+    hasSubUrl(pathname)
+  ) {
     hidden = true;
   }
   if (pathname.startsWith("/enter")) {

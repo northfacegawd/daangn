@@ -8,17 +8,14 @@ export default function Header() {
 
   const nested = hasSubUrl(router.pathname);
 
-  console.log(nested);
-
   return (
-    <header
-      className={classnames(
-        !nested ? "justify-center" : "",
-        "bg-white w-full max-w-xl text-lg px-10 font-medium py-3 fixed text-gray-800 border-b top-0 flex items-center h-[50px]"
-      )}
-    >
+    <header className="bg-white w-full h-12 max-w-xl justify-center text-lg px-10 font-medium  fixed text-gray-800 border-b top-0  flex items-center">
       {nested ? (
-        <button onClick={onClickToBack} title="goBack">
+        <button
+          onClick={onClickToBack}
+          title="goBack"
+          className="absolute left-4"
+        >
           <svg
             className="w-6 h-6"
             fill="none"
@@ -35,7 +32,9 @@ export default function Header() {
           </svg>
         </button>
       ) : (
-        <span>{getTitle(router.pathname)}</span>
+        <span className={classnames(nested ? "mx-auto" : "")}>
+          {getTitle(router.pathname)}
+        </span>
       )}
     </header>
   );

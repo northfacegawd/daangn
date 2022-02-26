@@ -1,12 +1,15 @@
 import type { NextPage } from "next";
+import Button from "../../components/common/button";
+import Input from "../../components/common/input";
+import TextArea from "../../components/common/textarea";
 
 const Upload: NextPage = () => {
   return (
-    <div className="px-4 py-10 space-y-5">
+    <form className="p-4 space-y-4" autoComplete="off">
       <div>
         <label
-          htmlFor="upload"
-          className="w-full cursor-pointer text-gray-600 hover:text-orange-500 hover:border-orange-500 flex items-center justify-center border-2 border-dashed border-gray-300 h-48 rounded-md"
+          htmlFor="image"
+          className="w-full cursor-pointer text-gray-600 hover:border-orange-500 hover:text-orange-500 flex items-center justify-center border-2 border-dashed border-gray-300 h-48 rounded-md"
         >
           <svg
             className="h-12 w-12"
@@ -22,63 +25,21 @@ const Upload: NextPage = () => {
               strokeLinejoin="round"
             />
           </svg>
+          <input title="image" id="image" className="hidden" type="file" />
         </label>
-        <input type="file" className="hidden" id="upload" title="item-upload" />
       </div>
-      <div>
-        <label
-          htmlFor="name"
-          className="mb-1 block text-sm font-medium text-gray-700"
-        >
-          Name
-        </label>
-        <div className="rounded-md relative flex items-center shadow-sm">
-          <input
-            type="text"
-            id="name"
-            className="appearance-none w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500"
-          />
-        </div>
-      </div>
-      <div>
-        <label
-          htmlFor="price"
-          className="mb-1 block text-sm font-medium text-gray-700"
-        >
-          Price
-        </label>
-        <div className="rounded-md relative flex items-center shadow-sm">
-          <div className="absolute left-0 pl-3 flex items-center justify-center pointer-events-none">
-            <span className="text-gray-500 text-sm">$</span>
-          </div>
-          <input
-            type="text"
-            placeholder="0.00"
-            id="price"
-            className="appearance-none pl-7 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500"
-          />
-          <div className="absolute pointer-events-none right-0 pr-3 flex items-center">
-            <span className="text-gray-500">USD</span>
-          </div>
-        </div>
-      </div>
-      <div>
-        <label
-          htmlFor="description"
-          className="mb-1 block text-sm font-medium text-gray-700"
-        >
-          Description
-        </label>
-        <textarea
-          id="description"
-          rows={4}
-          className="mt-1 shadow-sm w-full focus:ring-orange-500 focus:border-orange-500 rounded-md border-gray-300"
-        />
-      </div>
-      <button className=" w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:outline-none ">
-        Upload item
-      </button>
-    </div>
+      <Input required label="Name" name="name" type="text" />
+      <Input
+        required
+        label="Price"
+        placeholder="0.00"
+        name="price"
+        type="text"
+        kind="price"
+      />
+      <TextArea name="description" label="Description" />
+      <Button text="Upload item" />
+    </form>
   );
 };
 
