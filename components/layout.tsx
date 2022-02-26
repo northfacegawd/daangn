@@ -17,6 +17,7 @@ export default function Layout({
   children,
 }: LayoutProps) {
   const router = useRouter();
+  const activeClass = "text-orange-500";
   const onClick = () => {
     router.back();
   };
@@ -29,7 +30,7 @@ export default function Layout({
         )}
       >
         {canGoBack ? (
-          <button onClick={onClick}>
+          <button onClick={onClick} title="goBack">
             <svg
               className="w-6 h-6"
               fill="none"
@@ -54,7 +55,12 @@ export default function Layout({
       {hasTabBar ? (
         <nav className="bg-white max-w-xl text-gray-700 border-t fixed bottom-0 w-full px-10 pb-5 pt-3 flex justify-between text-xs">
           <Link href="/">
-            <a className="flex flex-col items-center space-y-2">
+            <a
+              className={classnames(
+                "flex flex-col items-center space-y-2",
+                router.pathname === "/" ? activeClass : ""
+              )}
+            >
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -73,7 +79,12 @@ export default function Layout({
             </a>
           </Link>
           <Link href="/community">
-            <a className="flex flex-col items-center space-y-2">
+            <a
+              className={classnames(
+                "flex flex-col items-center space-y-2",
+                router.pathname.startsWith("/community") ? activeClass : ""
+              )}
+            >
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -92,7 +103,12 @@ export default function Layout({
             </a>
           </Link>
           <Link href="/chats">
-            <a className="flex flex-col items-center space-y-2">
+            <a
+              className={classnames(
+                "flex flex-col items-center space-y-2",
+                router.pathname.startsWith("/chats") ? activeClass : ""
+              )}
+            >
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -111,7 +127,12 @@ export default function Layout({
             </a>
           </Link>
           <Link href="/live">
-            <a className="flex flex-col items-center space-y-2">
+            <a
+              className={classnames(
+                "flex flex-col items-center space-y-2",
+                router.pathname.startsWith("/live") ? activeClass : ""
+              )}
+            >
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -130,7 +151,12 @@ export default function Layout({
             </a>
           </Link>
           <Link href="/profile">
-            <a className="flex flex-col items-center space-y-2">
+            <a
+              className={classnames(
+                "flex flex-col items-center space-y-2",
+                router.pathname.startsWith("/profile") ? activeClass : ""
+              )}
+            >
               <svg
                 className="w-6 h-6"
                 fill="none"
