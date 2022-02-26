@@ -21,7 +21,6 @@ export function getTitle(pathname: string) {
 }
 
 export function hasSubUrl(pathname: string) {
-  console.log(pathname.split("/").length);
   return pathname.split("/").length > 2;
 }
 
