@@ -1,9 +1,8 @@
 import type { NextPage } from "next";
-import Layout from "../../components/layout";
 
 const Loved: NextPage = () => {
   return (
-    <div className="flex px-4 flex-col space-y-5 divide-y-[1px] pb-4">
+    <div className="flex px-4 flex-col space-y-5 divide-y-[1px]">
       {[...Array(12)].map((_, i) => (
         <div key={i} className="flex px-4 pt-4 cursor-pointer justify-between">
           <div className="flex space-x-4">

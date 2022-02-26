@@ -1,9 +1,8 @@
 import type { NextPage } from "next";
-import Layout from "../../components/layout";
 
 const Create: NextPage = () => {
   return (
-    <div className=" space-y-5 py-10 px-4">
+    <div className=" space-y-5 pt-4 px-4">
       <div>
         <label
           className="mb-1 block text-sm font-medium text-gray-700"

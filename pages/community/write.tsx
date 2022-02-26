@@ -1,9 +1,8 @@
 import type { NextPage } from "next";
-import Layout from "../../components/layout";
 
 const Write: NextPage = () => {
   return (
-    <form className="px-4 py-10">
+    <form className="px-4 pt-4">
       <textarea
         className="mt-1 shadow-sm w-full focus:ring-orange-500 rounded-md border-gray-300 focus:border-orange-500 "
         rows={4}

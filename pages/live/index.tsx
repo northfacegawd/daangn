@@ -10,7 +10,10 @@ const Live: NextPage = () => {
           <h1 className="text-2xl mt-2 font-bold text-gray-900">Galaxy S50</h1>
         </div>
       ))}
-      <button className="fixed hover:bg-orange-500 transition-colors cursor-pointer  bottom-24 right-5 shadow-xl bg-orange-400 rounded-full p-4 border-transparent text-white">
+      <button
+        title="create-live"
+        className="fixed hover:bg-orange-500 transition-colors cursor-pointer  bottom-24 right-5 shadow-xl bg-orange-400 rounded-full p-4 border-transparent text-white"
+      >
         <svg
           className="w-6 h-6"
           fill="none"

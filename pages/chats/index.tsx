@@ -1,10 +1,9 @@
 import type { NextPage } from "next";
-import Layout from "../../components/layout";
 
 const Chats: NextPage = () => {
   return (
     <div className="divide-y-[1px] ">
-      {[1, 1, 1, 1, 1, 1, 1].map((_, i) => (
+      {[...Array(7)].map((_, i) => (
         <div
           key={i}
           className="flex px-4 cursor-pointer py-3 items-center space-x-3"

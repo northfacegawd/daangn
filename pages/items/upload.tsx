@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-import Layout from "../../components/layout";
 
 const Upload: NextPage = () => {
   return (
@@ -23,8 +22,8 @@ const Upload: NextPage = () => {
               strokeLinejoin="round"
             />
           </svg>
-          <input type="file" className="hidden" id="upload" />
         </label>
+        <input type="file" className="hidden" id="upload" title="item-upload" />
       </div>
       <div>
         <label

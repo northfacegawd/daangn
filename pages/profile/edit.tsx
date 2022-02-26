@@ -1,9 +1,8 @@
 import type { NextPage } from "next";
-import Layout from "../../components/layout";
 
 const EditProfile: NextPage = () => {
   return (
-    <div className="py-2 px-4 space-y-4">
+    <div className="pt-4 px-4 space-y-4">
       <div className="flex items-center space-x-3">
         <div className="w-14 h-14 rounded-full bg-slate-500" />
         <label

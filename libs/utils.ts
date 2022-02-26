@@ -21,5 +21,17 @@ export function getTitle(pathname: string) {
 }
 
 export function hasSubUrl(pathname: string) {
-  return pathname.split("/").length > 1;
+  console.log(pathname.split("/").length);
+  return pathname.split("/").length > 2;
+}
+
+export function footerHidden(pathname: string) {
+  let hidden = false;
+  if (pathname.startsWith("/chats") && hasSubUrl(pathname)) {
+    hidden = true;
+  }
+  if (pathname.startsWith("/enter")) {
+    hidden = true;
+  }
+  return hidden;
 }

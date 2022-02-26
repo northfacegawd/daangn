@@ -1,15 +1,14 @@
 import type { NextPage } from "next";
 import React from "react";
-import Layout from "../../components/layout";
 
 const Stream: NextPage = () => {
   return (
-    <div className="pb-10 pt-4 px-4 space-y-4">
+    <div className="pt-4 px-4 space-y-2">
       <div className="w-full bg-slate-300 aspect-video rounded-md shadow-sm" />
       <h3 className="text-gray-800 font-semibold text-2xl mt-2">
         Let&apos;s try potatoes
       </h3>
-      <div className="px-4 py-10 space-y-4 pb-16 h-[55vh] overflow-y-scroll">
+      <div className="px-4 space-y-4 pb-4 h-[50vh] overflow-y-scroll">
         {[...Array(20)].map((i) => (
           <React.Fragment key={i}>
             <div className="flex items-start space-x-2">
@@ -32,6 +31,7 @@ const Stream: NextPage = () => {
           <input
             type="text"
             className="shadow-sm rounded-full w-full pr-12 border-gray-300 focus:ring-orange-500 focus:outline-none focus:border-orange-500"
+            title="message"
           />
           <div className="absolute inset-y-0 flex py-1.5 pr-1.5 right-0">
             <button className="flex items-center bg-orange-500 rounded-full px-2 pb-2 text-2xl text-white hover:bg-orange-600 cursor-pointer focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">

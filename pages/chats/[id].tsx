@@ -1,10 +1,9 @@
 import type { NextPage } from "next";
 import React from "react";
-import Layout from "../../components/layout";
 
 const ChatDetail: NextPage = () => {
   return (
-    <div className="px-4 py-10 space-y-4 pb-20">
+    <div className="px-4 pt-4 space-y-4">
       {[...Array(10)].map((i) => (
         <React.Fragment key={i}>
           <div className="flex items-start space-x-2">
@@ -27,9 +26,10 @@ const ChatDetail: NextPage = () => {
           </div>
         </React.Fragment>
       ))}
-      <div className="fixed w-full mx-auto max-w-md bottom-2 inset-x-0">
+      <div className="fixed w-full mx-auto max-w-md bottom-1.5 inset-x-0">
         <div className="flex relative items-center">
           <input
+            title="message"
             type="text"
             className="shadow-sm rounded-full w-full pr-12 border-gray-300 focus:ring-orange-500 focus:outline-none focus:border-orange-500"
           />
