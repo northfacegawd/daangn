@@ -1,24 +1,21 @@
 import { useRouter } from "next/router";
-import { classnames } from "../libs/utils";
+import { classnames, getTitle, hasSubUrl } from "../libs/utils";
 
-interface HeaderProps {
-  title?: string;
-  canGoBack?: boolean;
-}
-
-export default function Header({ canGoBack, title }: HeaderProps) {
+export default function Header() {
   const router = useRouter();
 
   const onClickToBack = () => router.back();
 
+  const nested = hasSubUrl(router.pathname);
+
   return (
     <header
       className={classnames(
-        !canGoBack ? "justify-center" : "",
+        nested ? "justify-center" : "",
         "bg-white w-full max-w-xl text-lg px-10 font-medium py-3 fixed text-gray-800 border-b top-0  flex items-center"
       )}
     >
-      {canGoBack ? (
+      {!nested ? (
         <button onClick={onClickToBack} title="goBack">
           <svg
             className="w-6 h-6"
@@ -36,7 +33,7 @@ export default function Header({ canGoBack, title }: HeaderProps) {
           </svg>
         </button>
       ) : null}
-      {title ? <span>{title}</span> : null}
+      <span>{getTitle(router.pathname)}</span>
     </header>
   );
 }

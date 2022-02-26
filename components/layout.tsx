@@ -22,7 +22,7 @@ export default function Layout({
 
   return (
     <>
-      <Header title={title} canGoBack={canGoBack} />
+      <Header />
       <main className={classnames("pt-14", hasTabBar ? "pb-24" : "")}>
         {children}
       </main>
