@@ -17,7 +17,7 @@ export default function Enter() {
   });
   const [method, setMethod] = useState<"email" | "phone">("email");
 
-  const [request, { loading, data }] = useMutation("/api/users/enter");
+  const [request, { loading }] = useMutation("/api/users/enter");
 
   const onEmailClick = () => {
     reset();
@@ -31,8 +31,6 @@ export default function Enter() {
   const onValid = async (data: EnterForm) => {
     request(data);
   };
-
-  console.log(loading, data);
 
   return (
     <div className="mt-16 px-4">
