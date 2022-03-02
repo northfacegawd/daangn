@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { classnames } from "../libs/client/utils";
+import { classnames } from "@libs/client/utils";
 
 export default function Footer() {
   const router = useRouter();

@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
-import Button from "../../components/common/button";
-import Input from "../../components/common/input";
-import TextArea from "../../components/common/textarea";
+import Button from "@components/common/button";
+import Input from "@components/common/input";
+import TextArea from "@components/common/textarea";
 
 const Upload: NextPage = () => {
   return (

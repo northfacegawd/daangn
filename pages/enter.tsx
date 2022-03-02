@@ -1,10 +1,9 @@
-import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import Button from "../components/common/button";
-import Input from "../components/common/input";
-import useMutation from "../libs/client/useMutation";
-import { classnames } from "../libs/client/utils";
+import Button from "@components/common/button";
+import Input from "@components/common/input";
+import useMutation from "@libs/client/useMutation";
+import { classnames } from "@libs/client/utils";
 
 interface EnterForm {
   email?: string;
