@@ -1,13 +1,38 @@
+import axios from "axios";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import Button from "../components/common/button";
 import Input from "../components/common/input";
-import { classnames } from "../libs/utils";
+import useMutation from "../libs/client/useMutation";
+import { classnames } from "../libs/client/utils";
+
+interface EnterForm {
+  email?: string;
+  phone?: string;
+}
 
 export default function Enter() {
+  const { register, reset, handleSubmit } = useForm<EnterForm>({
+    mode: "onBlur",
+  });
   const [method, setMethod] = useState<"email" | "phone">("email");
 
-  const onEmailClick = () => setMethod("email");
-  const onPhoneClick = () => setMethod("phone");
+  const [request, { loading, data }] = useMutation("/api/users/enter");
+
+  const onEmailClick = () => {
+    reset();
+    setMethod("email");
+  };
+  const onPhoneClick = () => {
+    reset();
+    setMethod("phone");
+  };
+
+  const onValid = async (data: EnterForm) => {
+    request(data);
+  };
+
+  console.log(loading, data);
 
   return (
     <div className="mt-16 px-4">
@@ -40,25 +65,34 @@ export default function Enter() {
             </button>
           </div>
         </div>
-        <form className="flex flex-col mt-8 space-y-4">
+        <form
+          onSubmit={handleSubmit(onValid)}
+          className="flex flex-col mt-8 space-y-4"
+        >
           {method === "email" ? (
-            <Input name="email" label="Email address" type="email" required />
+            <Input
+              register={register("email", { required: true })}
+              name="email"
+              label="Email address"
+              type="email"
+            />
           ) : null}
           {method === "phone" ? (
             <Input
+              register={register("phone", { required: true })}
               name="phone"
               label="Phone number"
               type="number"
               kind="phone"
-              required
             />
           ) : null}
-          {method === "email" ? <Button text={"Get login link"} /> : null}
+          {method === "email" ? (
+            <Button text={loading ? "Loading ..." : "Get login link"} />
+          ) : null}
           {method === "phone" ? (
-            <Button text={"Get one-time password"} />
+            <Button text={loading ? "Loading ..." : "Get one-time password"} />
           ) : null}
         </form>
-
         <div className="mt-8">
           <div className="relative">
             <div className="absolute w-full border-t border-gray-300" />

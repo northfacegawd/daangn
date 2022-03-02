@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { classnames, getTitle, hasSubUrl } from "../libs/utils";
+import { classnames, getTitle, hasSubUrl } from "../libs/client/utils";
 
 export default function Header() {
   const router = useRouter();

@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { classnames, footerHidden, hasSubUrl } from "../libs/utils";
+import { classnames, footerHidden, hasSubUrl } from "../libs/client/utils";
 import { useRouter } from "next/router";
 import Header from "./header";
 import Footer from "./footer";
