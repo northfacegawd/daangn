@@ -84,10 +84,16 @@ export default function Enter() {
             />
           ) : null}
           {method === "email" ? (
-            <Button text={loading ? "Loading ..." : "Get login link"} />
+            <Button
+              text={loading ? "Loading ..." : "Get login link"}
+              disabled={loading}
+            />
           ) : null}
           {method === "phone" ? (
-            <Button text={loading ? "Loading ..." : "Get one-time password"} />
+            <Button
+              text={loading ? "Loading ..." : "Get one-time password"}
+              disabled={loading}
+            />
           ) : null}
         </form>
         <div className="mt-8">
