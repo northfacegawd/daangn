@@ -1,22 +1,22 @@
 import axios from "axios";
 import { useCallback, useState } from "react";
 
-interface State<T> {
-  data: T | null;
+interface UserMutationState<T> {
   loading: boolean;
-  error: any;
+  data?: T;
+  error?: any;
 }
+
+type UseMutationResult<T> = [
+  (body: any) => Promise<void>,
+  UserMutationState<T>
+];
 
 export default function useMutation<T = any>(
   url: string
-): [
-  (body: any) => Promise<void>,
-  { loading: boolean; data: T | null; error: any }
-] {
-  const [state, setState] = useState<State<T>>({
-    data: null,
+): UseMutationResult<T> {
+  const [state, setState] = useState<UserMutationState<T>>({
     loading: false,
-    error: null,
   });
 
   const mutation = useCallback(
