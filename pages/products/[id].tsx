@@ -6,6 +6,7 @@ import { Product } from "@prisma/client";
 import Link from "next/link";
 import useMutation from "@libs/client/useMutation";
 import { classnames } from "@libs/client/utils";
+import { useCallback } from "react";
 
 interface ProductWithUser extends Product {
   user: {
@@ -24,11 +25,15 @@ interface ProductResponse {
 const ProductDetail: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { data } = useSWR<ProductResponse>(id ? `/api/products/${id}` : null);
+  const { data, mutate } = useSWR<ProductResponse>(
+    id ? `/api/products/${id}` : null
+  );
   const [toggleFav] = useMutation(`/api/products/${id}/fav`);
-  const onFavClick = () => {
+  const onFavClick = useCallback(() => {
+    if (!data) return;
+    mutate({ ...data, isLiked: !data.isLiked }, false);
     toggleFav({});
-  };
+  }, [data, mutate, toggleFav]);
 
   return (
     <div className="px-4 py-4">
@@ -38,9 +43,9 @@ const ProductDetail: NextPage = () => {
           <div className="w-12 h-12 rounded-full bg-slate-300" />
           <div>
             <p className="text-sm font-medium text-gray-700">
-              {data?.product.user.name}
+              {data?.product.user?.name}
             </p>
-            <Link href={`/users/profiles/${data?.product.user.id}`}>
+            <Link href={`/users/profiles/${data?.product.user?.id}`}>
               <a className="text-xs font-medium text-gray-500">
                 View profile &rarr;
               </a>
@@ -70,7 +75,7 @@ const ProductDetail: NextPage = () => {
               {data?.isLiked ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
+                  className="h-6 w-6"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
@@ -104,7 +109,7 @@ const ProductDetail: NextPage = () => {
       <div>
         <h2 className="text-2xl font-bold text-gray-900">Similar items</h2>
         <div className=" mt-6 grid grid-cols-2 gap-4">
-          {data?.relatedProducts.map((relatedProduct) => (
+          {data?.relatedProducts?.map((relatedProduct) => (
             <Link
               href={`/products/${relatedProduct.id}`}
               key={relatedProduct.id}
