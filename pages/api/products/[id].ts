@@ -22,7 +22,24 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (!product) {
     return res.status(404).json({ ok: false, error: "NOT_FOUND_PRODUCT" });
   }
-  return res.status(200).json({ ok: true, product });
+  // 해당 product와 관련된 products를 검색하는 로직
+  const terms = product.name.split(" ").map((word) => ({
+    name: {
+      contains: word,
+    },
+  }));
+  const relatedProducts = await client.product.findMany({
+    where: {
+      OR: terms,
+      AND: {
+        id: {
+          not: product.id,
+        },
+      },
+    },
+  });
+
+  return res.status(200).json({ ok: true, product, relatedProducts });
 }
 
 export default withApiSession(withHandler({ methods: ["GET"], handler }));
