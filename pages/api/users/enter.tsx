@@ -59,4 +59,4 @@ async function handler(
   return res.status(200).json({ ok: true });
 }
 
-export default withHandler({ method: "POST", handler, authorization: false });
+export default withHandler({ methods: ["POST"], handler, authorization: false });

@@ -5,22 +5,24 @@ export interface ResponseType {
   [key: string]: any;
 }
 
+type Method = "GET" | "POST" | "DELETE" | "PATCH" | "PUT";
+
 interface WithHandlerConfig {
-  method: "GET" | "POST" | "DELETE" | "PATCH" | "PUT";
+  methods: Method[];
   handler: (req: NextApiRequest, res: NextApiResponse) => void;
   authorization?: boolean;
 }
 
 export default function withHandler({
   handler,
-  method,
+  methods,
   authorization = true,
 }: WithHandlerConfig) {
   return async function (
     req: NextApiRequest,
     res: NextApiResponse
   ): Promise<any> {
-    if (req.method !== method) {
+    if (req.method && !methods.includes(req.method as Method)) {
       return res.status(405).end();
     }
     if (authorization && !req.session.user) {
