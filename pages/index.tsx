@@ -1,18 +1,21 @@
 import type { NextPage } from "next";
 import FloatingButton from "@components/common/floating-button";
 import Product from "@components/product";
-import useUser from "@libs/client/useUser";
 import Head from "next/head";
 import useSWR from "swr";
 import type { Product as P } from "@prisma/client";
 
+interface ProductWithCount extends P {
+  _count: {
+    favs: number;
+  };
+}
 interface ProductResponse {
   ok: boolean;
-  products: P[];
+  products: ProductWithCount[];
 }
 
 const Home: NextPage = () => {
-  const { user, isLoading } = useUser();
   const { data } = useSWR<ProductResponse>("/api/products");
 
   return (
@@ -28,7 +31,7 @@ const Home: NextPage = () => {
             title={product.name}
             price={product.price}
             comments={1}
-            hearts={1}
+            hearts={product._count.favs}
           />
         ))}
         <FloatingButton href="/products/upload">

@@ -29,6 +29,7 @@ const ProductDetail: NextPage = () => {
     id ? `/api/products/${id}` : null
   );
   const [toggleFav] = useMutation(`/api/products/${id}/fav`);
+
   const onFavClick = useCallback(() => {
     if (!data) return;
     mutate({ ...data, isLiked: !data.isLiked }, false);
