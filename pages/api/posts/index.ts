@@ -25,6 +25,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return res.status(200).json({ ok: true, post });
     }
     if (req.method === "GET") {
+      const { latitude, longitude } = req.query;
+      const parsedLatitude = parseFloat(latitude.toString());
+      const ParsedLongitude = parseFloat(longitude.toString());
       const posts = await client.post.findMany({
         include: {
           user: {
@@ -37,6 +40,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
               answers: true,
               wonderings: true,
             },
+          },
+        },
+        where: {
+          // TODO - 검색 범위는 유저가 직접 정할 수 있도록 수정
+          latitude: {
+            gte: parsedLatitude - 0.01,
+            lte: parsedLatitude + 0.01,
+          },
+          longitude: {
+            gte: ParsedLongitude - 0.01,
+            lte: ParsedLongitude + 0.01,
           },
         },
       });
