@@ -1,19 +1,11 @@
 import type { NextPage } from "next";
 import Item from "@components/product";
+import ProductList from "@components/common/product-list";
 
 const Loved: NextPage = () => {
   return (
     <div className="flex px-4 flex-col space-y-5 divide-y-[1px]">
-      {[...Array(12)].map((_, i) => (
-        <Item
-          key={i}
-          id={i}
-          title="iPhone 14"
-          price={99}
-          comments={1}
-          hearts={1}
-        />
-      ))}
+      <ProductList kind="favs" />
     </div>
   );
 };
