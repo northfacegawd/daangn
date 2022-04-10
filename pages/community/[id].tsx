@@ -6,6 +6,9 @@ import { Answer, Post, User } from "@prisma/client";
 import Link from "next/link";
 import useMutation from "@libs/client/useMutation";
 import { classnames } from "@libs/client/utils";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
+import Button from "@components/common/button";
 
 interface AnswerWithUser extends Answer {
   user: User;
@@ -24,11 +27,24 @@ interface PostResponse {
   isWondering: boolean;
 }
 
+interface AnswerForm {
+  answer: string;
+}
+
+interface AnswerResponse {
+  ok: boolean;
+}
+
 const CommunityPostDetail: NextPage = () => {
   const router = useRouter();
+  const { register, handleSubmit, reset } = useForm<AnswerForm>({
+    mode: "onBlur",
+  });
   const { id } = router.query;
   const { data, mutate } = useSWR<PostResponse>(id ? `/api/posts/${id}` : null);
-  const [wonder] = useMutation(`/api/posts/${id}/wonder`);
+  const [wonder, { loading }] = useMutation(`/api/posts/${id}/wonder`);
+  const [sendAnswer, { data: answerData, loading: answerLoading }] =
+    useMutation<AnswerResponse>(`/api/posts/${id}/answers`);
 
   const onWonderClick = () => {
     if (!data) return;
@@ -48,8 +64,22 @@ const CommunityPostDetail: NextPage = () => {
       },
       false
     );
-    wonder({});
+    if (!loading) {
+      wonder({});
+    }
   };
+
+  const onValid = (form: AnswerForm) => {
+    if (answerLoading) return;
+    sendAnswer(form);
+  };
+
+  useEffect(() => {
+    if (answerData?.ok) {
+      reset();
+      mutate(); // mutate를 인자 없이 사용하는경우는 refetch를 실행
+    }
+  }, [answerData, reset, mutate]);
 
   return (
     <div>
@@ -133,12 +163,17 @@ const CommunityPostDetail: NextPage = () => {
           </div>
         ))}
       </div>
-      <div className="px-4">
-        <TextArea name="description" placeholder="Answer this question!" />
-        <button className="mt-2 w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:outline-none ">
-          Reply
-        </button>
-      </div>
+      <form className="px-4" onSubmit={handleSubmit(onValid)}>
+        <TextArea
+          register={register("answer", { required: true, minLength: 5 })}
+          name="description"
+          placeholder="Answer this question!"
+        />
+        <Button
+          text={answerLoading ? "Loading..." : "Reply"}
+          disabled={answerLoading}
+        />
+      </form>
     </div>
   );
 };

@@ -9,6 +9,18 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     session: { user },
   } = req;
   try {
+    const product = await client.product.findUnique({
+      where: {
+        id: +id.toString(),
+      },
+      select: {
+        id: true,
+      },
+    });
+    if (!product) {
+      return res.status(404).json({ ok: false, error: "NOT_FOUND_PRODUCT" });
+    }
+
     const alreadyExists = await client.fav.findFirst({
       where: {
         productId: +id.toString(),

@@ -1,11 +1,12 @@
 import withHandler from "@libs/server/withHandler";
+import { withApiSession } from "@libs/server/withSession";
 import { NextApiRequest, NextApiResponse } from "next";
 import client from "@libs/server/client";
-import { withApiSession } from "@libs/server/withSession";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
     query: { id },
+    body: { answer },
     session: { user },
   } = req;
   try {
@@ -20,34 +21,21 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (!post) {
       return res.status(404).json({ ok: false, error: "NOT_FOUND_POST" });
     }
-    const alreadyExists = await client.wondering.findFirst({
-      where: {
-        userId: user?.id,
-        postId: +id.toString(),
+    await client.answer.create({
+      data: {
+        user: {
+          connect: {
+            id: user?.id,
+          },
+        },
+        post: {
+          connect: {
+            id: +id.toString(),
+          },
+        },
+        answer,
       },
     });
-    if (alreadyExists) {
-      await client.wondering.delete({
-        where: {
-          id: alreadyExists.id,
-        },
-      });
-    } else {
-      await client.wondering.create({
-        data: {
-          user: {
-            connect: {
-              id: user?.id,
-            },
-          },
-          post: {
-            connect: {
-              id: +id.toString(),
-            },
-          },
-        },
-      });
-    }
     return res.status(200).json({ ok: true });
   } catch (error) {
     console.log(error);
