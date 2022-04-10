@@ -4,11 +4,19 @@ import Input from "@components/common/input";
 import useUser from "@libs/client/useUser";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import useMutation from "@libs/client/useMutation";
 
 interface EditProfileForm {
   email?: string;
   phone?: string;
+  name: string;
   formErrors?: string;
+}
+
+interface EditProfileResponse {
+  ok: boolean;
+  error?: string;
+  errorField?: "email" | "phone";
 }
 
 const EditProfile: NextPage = () => {
@@ -22,19 +30,35 @@ const EditProfile: NextPage = () => {
   } = useForm<EditProfileForm>({
     mode: "onBlur",
   });
+  const [editProfile, { data, loading, error }] =
+    useMutation<EditProfileResponse>("/api/users/me");
 
-  const onValid = ({ email, phone }: EditProfileForm) => {
+  const onValid = ({ email, phone, name }: EditProfileForm) => {
+    if (loading) return;
     if (!email && !phone) {
-      setError("formErrors", {
+      return setError("formErrors", {
         message: "이메일, 전화번호 중 하나는 필수로 입력해야 합니다.",
       });
     }
+    editProfile({ email, phone, name });
   };
 
   useEffect(() => {
+    if (user?.name) setValue("name", user.name);
     if (user?.email) setValue("email", user.email);
     if (user?.phone) setValue("phone", user.phone);
   }, [user, setValue]);
+
+  useEffect(() => {
+    if (error && error.response?.data) {
+      if (error.response?.data?.errorField === "email") {
+        setError("email", { message: "현재 사용중인 이메일 입니다." });
+      }
+      if (error.response?.data?.errorField === "phone") {
+        setError("phone", { message: "현재 사용중인 전화번호 입니다." });
+      }
+    }
+  }, [setError, error]);
 
   return (
     <form className="pt-4 px-4 space-y-4" onSubmit={handleSubmit(onValid)}>
@@ -49,26 +73,53 @@ const EditProfile: NextPage = () => {
         </label>
       </div>
       <Input
+        register={register("name", {
+          required: { message: "이름은 비워둘 수 없습니다.", value: true },
+        })}
+        label="Username"
+        name="name"
+        type="text"
+        error={Boolean(errors.formErrors || errors.name)}
+      />
+      {errors.name && (
+        <span className="text-red-600 font-bold block text-sm">
+          {errors.name.message}
+        </span>
+      )}
+      <Input
         register={register("email")}
         label="Email address"
         name="email"
         type="email"
-        error={Boolean(errors.formErrors)}
+        error={Boolean(errors.formErrors || errors.email)}
       />
+      {errors.email && (
+        <span className="text-red-600 font-bold block text-sm">
+          {errors.email.message}
+        </span>
+      )}
       <Input
         register={register("phone")}
         label="Phone number"
         name="phone"
         type="number"
         kind="phone"
-        error={Boolean(errors.formErrors)}
+        error={Boolean(errors.formErrors || errors.phone)}
       />
-      {errors.formErrors ? (
+      {errors.phone && (
+        <span className="text-red-600 font-bold block text-sm">
+          {errors.phone.message}
+        </span>
+      )}
+      {errors.formErrors && (
         <span className="my-2 text-red-600 font-bold block text-sm text-center">
           {errors.formErrors.message}
         </span>
-      ) : null}
-      <Button text="Update profile" />
+      )}
+      <Button
+        disabled={loading}
+        text={loading ? "Loading..." : "Update profile"}
+      />
     </form>
   );
 };
