@@ -6,6 +6,7 @@ import { withApiSession } from "@libs/server/withSession";
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
     query: { id },
+    session: { user },
   } = req;
   try {
     const post = await client.post.findUnique({
@@ -46,7 +47,18 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (!post) {
       return res.status(404).json({ ok: false, error: "NOT_FOUND_POST" });
     }
-    return res.status(200).json({ ok: true, post });
+    const isWondering = Boolean(
+      await client.wondering.findFirst({
+        where: {
+          postId: +id.toString(),
+          userId: user?.id,
+        },
+        select: {
+          id: true,
+        },
+      })
+    );
+    return res.status(200).json({ ok: true, post, isWondering });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ ok: false, error });
