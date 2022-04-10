@@ -5,7 +5,7 @@ import client from "@libs/server/client";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
-    body: { question },
+    body: { question, latitude, longitude },
     session: { user },
   } = req;
   try {
@@ -13,6 +13,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       const post = await client.post.create({
         data: {
           question,
+          latitude,
+          longitude,
           user: {
             connect: {
               id: user?.id,
