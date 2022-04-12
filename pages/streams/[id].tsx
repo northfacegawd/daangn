@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import React from "react";
+import React, { useEffect } from "react";
 import Message from "@components/common/message";
 import useSWR from "swr";
 import { useRouter } from "next/router";
@@ -22,9 +22,13 @@ interface StreamResponse {
   ok: true;
   stream: StreamWithMessage;
 }
-
 interface MessageForm {
   message: string;
+}
+
+interface MessageResponse {
+  ok: boolean;
+  message: M;
 }
 
 const Stream: NextPage = () => {
@@ -34,16 +38,36 @@ const Stream: NextPage = () => {
     mode: "onBlur",
   });
   const { id } = router.query;
+  /*
+    NextJS, api, page만 이용해서 실시간 처리를 할 수 없음.
+    실시간 처리를 위한 설정을 하기 전에 실시간으로 채팅을 하는 것 처럼 보이기 위한
+    api 재요청 주기를 1초로 주고 채팅 데이터를 mutate함.
+  */
   const { data, mutate } = useSWR<StreamResponse>(
-    id ? `/api/streams/${id}` : null
+    id ? `/api/streams/${id}` : null,
+    { refreshInterval: 1000 }
   );
-  const [sendMessage, { loading, data: messageData }] = useMutation(
-    `/api/streams/${id}/messages`
-  );
+  const [sendMessage, { loading, data: messageData }] =
+    useMutation<MessageResponse>(`/api/streams/${id}/messages`);
 
   const onValid = (data: MessageForm) => {
     if (loading) return;
     reset();
+    mutate(
+      (prev) =>
+        prev &&
+        ({
+          ...prev,
+          stream: {
+            ...prev.stream,
+            messages: [
+              ...prev.stream.messages,
+              { id: Date.now(), message: data.message, user: { ...user } },
+            ],
+          },
+        } as any),
+      false
+    );
     sendMessage(data);
   };
 
