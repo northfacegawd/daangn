@@ -2,11 +2,11 @@ import type { NextPage } from "next";
 import Link from "next/link";
 import FloatingButton from "../../components/common/floating-button";
 
-const Live: NextPage = () => {
+const Streams: NextPage = () => {
   return (
     <div className=" divide-y-[1px] space-y-4">
       {[...Array(7)].map((_, i) => (
-        <Link href={`/live/${i}`} key={i}>
+        <Link href={`/streams/${i}`} key={i}>
           <a className="pt-4 block px-4">
             <div className="w-full rounded-md shadow-sm bg-slate-300 aspect-video" />
             <h1 className="text-2xl mt-2 font-bold text-gray-900">
@@ -15,7 +15,7 @@ const Live: NextPage = () => {
           </a>
         </Link>
       ))}
-      <FloatingButton href="/live/create">
+      <FloatingButton href="/streams/create">
         <svg
           className="w-6 h-6"
           fill="none"
@@ -35,4 +35,4 @@ const Live: NextPage = () => {
   );
 };
 
-export default Live;
+export default Streams;

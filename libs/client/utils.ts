@@ -9,7 +9,7 @@ export function getTitle(pathname: string) {
     title = "홈";
   } else if (pathname.startsWith("/community")) {
     title = "동네생활";
-  } else if (pathname.startsWith("/live")) {
+  } else if (pathname.startsWith("/streams")) {
     title = "라이브";
   } else if (pathname.startsWith("/profile")) {
     title = "나의 당근";
@@ -27,7 +27,7 @@ export function hasSubUrl(pathname: string) {
 export function footerHidden(pathname: string) {
   let hidden = false;
   if (
-    (pathname.startsWith("/chats") || pathname.startsWith("/live")) &&
+    (pathname.startsWith("/chats") || pathname.startsWith("/streams")) &&
     hasSubUrl(pathname)
   ) {
     hidden = true;

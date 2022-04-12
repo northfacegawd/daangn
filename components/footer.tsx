@@ -86,11 +86,11 @@ export default function Footer() {
           <span>채팅</span>
         </a>
       </Link>
-      <Link href="/live">
+      <Link href="/streams">
         <a
           className={classnames(
             "flex flex-col items-center space-y-2",
-            router.pathname.startsWith("/live")
+            router.pathname.startsWith("/streams")
               ? activeClass
               : "hover:text-gray-500 transition-colors"
           )}
