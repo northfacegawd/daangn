@@ -12,6 +12,20 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       where: {
         id: +id.toString(),
       },
+      include: {
+        messages: {
+          select: {
+            id: true,
+            message: true,
+            user: {
+              select: {
+                avatar: true,
+                id: true,
+              },
+            },
+          },
+        },
+      },
     });
     if (!stream) {
       return res.status(404).json({ ok: false, error: "NOT_FOUND_STREAM" });

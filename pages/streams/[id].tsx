@@ -3,14 +3,24 @@ import React from "react";
 import Message from "@components/common/message";
 import useSWR from "swr";
 import { useRouter } from "next/router";
-import { Stream } from "@prisma/client";
+import type { Message as M, Stream } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import useMutation from "@libs/client/useMutation";
 import { classnames } from "@libs/client/utils";
+import useUser from "@libs/client/useUser";
 
+interface MessageWithUser extends M {
+  user: {
+    id: number;
+    avatar: string | null;
+  };
+}
+interface StreamWithMessage extends Stream {
+  messages: MessageWithUser[];
+}
 interface StreamResponse {
   ok: true;
-  stream: Stream;
+  stream: StreamWithMessage;
 }
 
 interface MessageForm {
@@ -19,11 +29,14 @@ interface MessageForm {
 
 const Stream: NextPage = () => {
   const router = useRouter();
+  const { user } = useUser();
   const { register, handleSubmit, reset } = useForm<MessageForm>({
     mode: "onBlur",
   });
   const { id } = router.query;
-  const { data } = useSWR<StreamResponse>(id ? `/api/streams/${id}` : null);
+  const { data, mutate } = useSWR<StreamResponse>(
+    id ? `/api/streams/${id}` : null
+  );
   const [sendMessage, { loading, data: messageData }] = useMutation(
     `/api/streams/${id}/messages`
   );
@@ -49,12 +62,12 @@ const Stream: NextPage = () => {
       <div>
         <h2 className="text-2xl font-bold text-gray-900">Live Chat</h2>
         <div className="py-10 pb-16 h-[50vh] overflow-y-scroll  px-4 space-y-4">
-          {[...Array(6)].map((_, i) => (
-            <React.Fragment key={i}>
-              <Message message="Hi how much are you selling them for?" />
-              <Message message="I want ￦20,000" reversed />
-              <Message message="미쳤어" />
-            </React.Fragment>
+          {data?.stream.messages.map((message) => (
+            <Message
+              key={message.id}
+              message={message.message}
+              reversed={message.user.id === user?.id}
+            />
           ))}
         </div>
 
