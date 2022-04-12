@@ -4,16 +4,35 @@ import Message from "@components/common/message";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import { Stream } from "@prisma/client";
+import { useForm } from "react-hook-form";
+import useMutation from "@libs/client/useMutation";
+import { classnames } from "@libs/client/utils";
 
 interface StreamResponse {
   ok: true;
   stream: Stream;
 }
 
+interface MessageForm {
+  message: string;
+}
+
 const Stream: NextPage = () => {
   const router = useRouter();
+  const { register, handleSubmit, reset } = useForm<MessageForm>({
+    mode: "onBlur",
+  });
   const { id } = router.query;
   const { data } = useSWR<StreamResponse>(id ? `/api/streams/${id}` : null);
+  const [sendMessage, { loading, data: messageData }] = useMutation(
+    `/api/streams/${id}/messages`
+  );
+
+  const onValid = (data: MessageForm) => {
+    if (loading) return;
+    reset();
+    sendMessage(data);
+  };
 
   return (
     <div className="py-10 px-4  space-y-4">
@@ -40,18 +59,29 @@ const Stream: NextPage = () => {
         </div>
 
         <div className="fixed py-2 bg-white  bottom-0 inset-x-0">
-          <div className="flex relative max-w-md items-center  w-full mx-auto">
+          <form
+            onSubmit={handleSubmit(onValid)}
+            className="flex relative max-w-md items-center  w-full mx-auto"
+          >
             <input
               title="message"
               type="text"
+              {...register("message", { required: true })}
               className="shadow-sm rounded-full w-full border-gray-300 focus:ring-orange-500 focus:outline-none pr-12 focus:border-orange-500"
             />
             <div className="absolute inset-y-0 flex py-1.5 pr-1.5 right-0">
-              <button className="flex focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 items-center bg-orange-500 rounded-full px-3 hover:bg-orange-600 text-sm text-white">
+              <button
+                className={classnames(
+                  "flex focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 items-center bg-orange-500 rounded-full px-3 hover:bg-orange-600 text-sm text-white",
+                  loading
+                    ? "bg-orange-300 cursor-not-allowed hover:bg-orange-300"
+                    : ""
+                )}
+              >
                 &rarr;
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
