@@ -25,6 +25,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return res.status(200).json({ ok: true, stream });
     }
     if (req.method === "GET") {
+      const streams = await client.stream.findMany();
+      return res.status(200).json({ ok: true, streams });
     }
   } catch (error) {
     console.log(error);

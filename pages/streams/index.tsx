@@ -1,16 +1,25 @@
+import { Stream } from "@prisma/client";
 import type { NextPage } from "next";
 import Link from "next/link";
+import useSWR from "swr";
 import FloatingButton from "../../components/common/floating-button";
 
+interface StreamsResponse {
+  ok: boolean;
+  streams: Stream[];
+}
+
 const Streams: NextPage = () => {
+  const { data } = useSWR<StreamsResponse>("/api/streams");
+
   return (
     <div className=" divide-y-[1px] space-y-4">
-      {[...Array(7)].map((_, i) => (
-        <Link href={`/streams/${i}`} key={i}>
+      {data?.streams.map((stream) => (
+        <Link href={`/streams/${stream.id}`} key={stream.id}>
           <a className="pt-4 block px-4">
             <div className="w-full rounded-md shadow-sm bg-slate-300 aspect-video" />
             <h1 className="text-2xl mt-2 font-bold text-gray-900">
-              Galaxy S50
+              {stream.name}
             </h1>
           </a>
         </Link>
