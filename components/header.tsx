@@ -9,7 +9,7 @@ export default function Header() {
   const nested = hasSubUrl(router.pathname);
 
   return (
-    <header className="bg-white w-full h-12 max-w-xl justify-center text-lg px-10 font-medium  fixed text-gray-800 border-b top-0  flex items-center">
+    <header className="z-10 bg-white w-full h-12 max-w-xl justify-center text-lg px-10 font-medium  fixed text-gray-800 border-b top-0  flex items-center">
       {nested ? (
         <button
           onClick={onClickToBack}

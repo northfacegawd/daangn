@@ -8,6 +8,7 @@ import useMutation from "@libs/client/useMutation";
 import { classnames, getImageUrl } from "@libs/client/utils";
 import { useCallback } from "react";
 import useUser from "@libs/client/useUser";
+import Image from "next/image";
 
 interface ProductWithUser extends Product {
   user: {
@@ -42,18 +43,25 @@ const ProductDetail: NextPage = () => {
     <div className="px-4 py-4">
       <div className="mb-8">
         {data?.product.image ? (
-          <img
-            src={getImageUrl(data.product.image)}
-            className="mh-96 bg-slate-300"
-          />
+          <div className="relative pb-80">
+            <Image
+              src={getImageUrl(data.product.image)}
+              className="bg-slate-300 object-contain"
+              alt="product"
+              layout="fill"
+            />
+          </div>
         ) : (
           <div className="h-96 bg-slate-300" />
         )}
         <div className="flex cursor-pointer py-3 border-t border-b items-center space-x-3">
           {user?.avatar ? (
-            <img
+            <Image
               src={getImageUrl(user.avatar, "avatar")}
               className="w-12 h-12 rounded-full bg-slate-300"
+              width={48}
+              height={48}
+              alt="avatar"
             />
           ) : (
             <div className="w-12 h-12 rounded-full bg-slate-300" />
