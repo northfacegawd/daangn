@@ -37,3 +37,7 @@ export function footerHidden(pathname: string) {
   }
   return hidden;
 }
+
+export function getAvatarUrl(imageId: string) {
+  return `https://imagedelivery.net/8L5VksWFNcCtvLePLh5r8Q/${imageId}/public`;
+}
