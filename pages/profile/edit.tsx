@@ -104,7 +104,7 @@ const EditProfile: NextPage = () => {
     if (user?.name) setValue("name", user.name);
     if (user?.email) setValue("email", user.email);
     if (user?.phone) setValue("phone", user.phone);
-    if (user?.avatar) setAvatarPreview(getAvatarUrl(user.avatar));
+    if (user?.avatar) setAvatarPreview(getAvatarUrl(user.avatar, "avatar"));
   }, [user, setValue]);
 
   useEffect(() => {

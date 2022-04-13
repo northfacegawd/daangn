@@ -5,7 +5,7 @@ import useSWR from "swr";
 import { Answer, Post, User } from "@prisma/client";
 import Link from "next/link";
 import useMutation from "@libs/client/useMutation";
-import { classnames } from "@libs/client/utils";
+import { classnames, getAvatarUrl } from "@libs/client/utils";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import Button from "@components/common/button";
@@ -87,7 +87,14 @@ const CommunityPostDetail: NextPage = () => {
         동네질문
       </span>
       <div className="flex mb-3 px-4 cursor-pointer pb-3  border-b items-center space-x-3">
-        <div className="w-10 h-10 rounded-full bg-slate-300" />
+        {data?.post.user.avatar ? (
+          <img
+            src={getAvatarUrl(data.post.user.avatar, "avatar")}
+            className="w-10 h-10 rounded-full bg-slate-300"
+          />
+        ) : (
+          <div className="w-10 h-10 rounded-full bg-slate-300" />
+        )}
         <div>
           <p className="text-sm font-medium text-gray-700">
             {data?.post.user.name}
@@ -150,7 +157,15 @@ const CommunityPostDetail: NextPage = () => {
       <div className="px-4 my-5 space-y-5">
         {data?.post.answers.map((answer) => (
           <div key={answer.id} className="flex items-start space-x-3">
-            <div className="w-8 h-8 bg-slate-200 rounded-full" />
+            {answer.user.avatar ? (
+              <img
+                src={getAvatarUrl(answer.user.avatar, "avatar")}
+                className="w-8 h-8 bg-slate-200 rounded-full"
+              />
+            ) : (
+              <div className="w-8 h-8 bg-slate-200 rounded-full" />
+            )}
+
             <div>
               <span className="text-sm block font-medium text-gray-700">
                 {answer.user.name}
