@@ -5,7 +5,7 @@ import useSWR from "swr";
 import { Answer, Post, User } from "@prisma/client";
 import Link from "next/link";
 import useMutation from "@libs/client/useMutation";
-import { classnames, getAvatarUrl } from "@libs/client/utils";
+import { classnames, getImageUrl } from "@libs/client/utils";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import Button from "@components/common/button";
@@ -89,7 +89,7 @@ const CommunityPostDetail: NextPage = () => {
       <div className="flex mb-3 px-4 cursor-pointer pb-3  border-b items-center space-x-3">
         {data?.post.user.avatar ? (
           <img
-            src={getAvatarUrl(data.post.user.avatar, "avatar")}
+            src={getImageUrl(data.post.user.avatar, "avatar")}
             className="w-10 h-10 rounded-full bg-slate-300"
           />
         ) : (
@@ -159,7 +159,7 @@ const CommunityPostDetail: NextPage = () => {
           <div key={answer.id} className="flex items-start space-x-3">
             {answer.user.avatar ? (
               <img
-                src={getAvatarUrl(answer.user.avatar, "avatar")}
+                src={getImageUrl(answer.user.avatar, "avatar")}
                 className="w-8 h-8 bg-slate-200 rounded-full"
               />
             ) : (

@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import useMutation from "@libs/client/useMutation";
 import axios from "axios";
-import { getAvatarUrl } from "@libs/client/utils";
+import { getImageUrl } from "@libs/client/utils";
 
 interface EditProfileForm {
   name: string;
@@ -22,13 +22,13 @@ interface EditProfileResponse {
   errorField?: "email" | "phone";
 }
 
-interface FilesResponse {
+export interface FilesResponse {
   ok: boolean;
   id: string;
   uploadURL: string;
 }
 
-interface CloudflareUploadResponse {
+export interface CloudflareUploadResponse {
   result: {
     id: string;
     filename: string;
@@ -71,6 +71,7 @@ const EditProfile: NextPage = () => {
       const {
         data: { uploadURL },
       } = await axios.get<FilesResponse>("/api/files");
+
       // upload file to Cloudflare URL
       const form = new FormData();
       form.append("file", avatar.item(0)!, user.id.toString());
@@ -104,7 +105,7 @@ const EditProfile: NextPage = () => {
     if (user?.name) setValue("name", user.name);
     if (user?.email) setValue("email", user.email);
     if (user?.phone) setValue("phone", user.phone);
-    if (user?.avatar) setAvatarPreview(getAvatarUrl(user.avatar, "avatar"));
+    if (user?.avatar) setAvatarPreview(getImageUrl(user.avatar, "avatar"));
   }, [user, setValue]);
 
   useEffect(() => {

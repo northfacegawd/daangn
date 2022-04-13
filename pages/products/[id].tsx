@@ -5,8 +5,9 @@ import useSWR from "swr";
 import { Product } from "@prisma/client";
 import Link from "next/link";
 import useMutation from "@libs/client/useMutation";
-import { classnames } from "@libs/client/utils";
+import { classnames, getImageUrl } from "@libs/client/utils";
 import { useCallback } from "react";
+import useUser from "@libs/client/useUser";
 
 interface ProductWithUser extends Product {
   user: {
@@ -24,6 +25,7 @@ interface ProductResponse {
 
 const ProductDetail: NextPage = () => {
   const router = useRouter();
+  const { user } = useUser();
   const { id } = router.query;
   const { data, mutate } = useSWR<ProductResponse>(
     id ? `/api/products/${id}` : null
@@ -39,9 +41,23 @@ const ProductDetail: NextPage = () => {
   return (
     <div className="px-4 py-4">
       <div className="mb-8">
-        <div className="h-96 bg-slate-300" />
+        {data?.product.image ? (
+          <img
+            src={getImageUrl(data.product.image)}
+            className="mh-96 bg-slate-300"
+          />
+        ) : (
+          <div className="h-96 bg-slate-300" />
+        )}
         <div className="flex cursor-pointer py-3 border-t border-b items-center space-x-3">
-          <div className="w-12 h-12 rounded-full bg-slate-300" />
+          {user?.avatar ? (
+            <img
+              src={getImageUrl(user.avatar, "avatar")}
+              className="w-12 h-12 rounded-full bg-slate-300"
+            />
+          ) : (
+            <div className="w-12 h-12 rounded-full bg-slate-300" />
+          )}
           <div>
             <p className="text-sm font-medium text-gray-700">
               {data?.product.user?.name}

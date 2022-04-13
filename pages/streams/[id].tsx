@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import type { Message as M, Stream } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import useMutation from "@libs/client/useMutation";
-import { classnames, getAvatarUrl } from "@libs/client/utils";
+import { classnames, getImageUrl } from "@libs/client/utils";
 import useUser from "@libs/client/useUser";
 
 interface MessageWithUser extends M {
@@ -93,7 +93,7 @@ const Stream: NextPage = () => {
               reversed={message.user.id === user?.id}
               avatarUrl={
                 message.user.avatar
-                  ? getAvatarUrl(message.user.avatar, "avatar")
+                  ? getImageUrl(message.user.avatar, "avatar")
                   : undefined
               }
             />

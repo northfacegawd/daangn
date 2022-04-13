@@ -19,7 +19,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     }
     if (req.method === "POST") {
       const {
-        body: { name, price, description },
+        body: { name, price, description, photoId },
         session: { user },
       } = req;
       const product = await client.product.create({
@@ -27,7 +27,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           name,
           price,
           description,
-          image: "xx",
+          image: photoId,
           user: {
             connect: {
               id: user?.id,

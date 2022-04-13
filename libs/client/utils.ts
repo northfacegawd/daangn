@@ -38,6 +38,6 @@ export function footerHidden(pathname: string) {
   return hidden;
 }
 
-export function getAvatarUrl(imageId: string, variant = "public") {
+export function getImageUrl(imageId: string, variant = "public") {
   return `https://imagedelivery.net/8L5VksWFNcCtvLePLh5r8Q/${imageId}/${variant}`;
 }
