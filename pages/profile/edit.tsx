@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import useMutation from "@libs/client/useMutation";
 import axios from "axios";
 import { getImageUrl } from "@libs/client/utils";
+import Image from "next/image";
 
 interface EditProfileForm {
   name: string;
@@ -123,9 +124,12 @@ const EditProfile: NextPage = () => {
     <form className="pt-4 px-4 space-y-4" onSubmit={handleSubmit(onValid)}>
       <div className="flex items-center space-x-3">
         {avatarPreview ? (
-          <img
+          <Image
             src={avatarPreview}
             className="w-14 h-14 rounded-full bg-slate-500"
+            width={56}
+            height={56}
+            alt="avatar"
           />
         ) : (
           <div className="w-14 h-14 rounded-full bg-slate-500" />

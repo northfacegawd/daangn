@@ -109,7 +109,6 @@ const Upload: NextPage = () => {
               />
             </svg>
           )}
-
           <input
             {...register("photo")}
             title="image"

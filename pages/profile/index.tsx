@@ -2,6 +2,7 @@ import useUser from "@libs/client/useUser";
 import { classnames, getImageUrl } from "@libs/client/utils";
 import type { Review } from "@prisma/client";
 import type { NextPage } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import useSWR from "swr";
 
@@ -25,9 +26,12 @@ const Profile: NextPage = () => {
     <div className="px-4">
       <div className="flex items-center mt-4 space-x-3">
         {user?.avatar ? (
-          <img
+          <Image
             src={getImageUrl(user.avatar, "avatar")}
             className="w-16 h-16 bg-slate-500 rounded-full"
+            width={64}
+            height={64}
+            alt="avatar"
           />
         ) : (
           <div className="w-16 h-16 bg-slate-500 rounded-full"></div>
