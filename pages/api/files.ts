@@ -3,7 +3,7 @@ import { withApiSession } from "@libs/server/withSession";
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 
-interface CloudFlareResponse {
+export interface CloudFlareResponse {
   result: {
     id: string;
     uploadURL: string;

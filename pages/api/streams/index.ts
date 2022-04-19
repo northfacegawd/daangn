@@ -3,6 +3,22 @@ import { withApiSession } from "@libs/server/withSession";
 import { NextApiRequest, NextApiResponse } from "next";
 import client from "@libs/server/client";
 
+interface CloudFlareStreamResponse {
+  result: {
+    uid: string;
+    rtmps: { url: string; streamKey: string };
+    created: string;
+    modified: string;
+    meta: { name: string };
+    status: any;
+    recording: {
+      mode: string;
+      requireSignedURLs: boolean;
+      allowedOrigins: string[];
+    };
+  };
+}
+
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
     session: { user },
@@ -10,8 +26,28 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   } = req;
   try {
     if (req.method === "POST") {
+      const {
+        result: {
+          uid,
+          rtmps: { streamKey, url },
+        },
+      }: CloudFlareStreamResponse = await (
+        await fetch(
+          `https://api.cloudflare.com/client/v4/accounts/${process.env.CF_ID}/stream/live_inputs`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${process.env.CF_STREAM_TOKEN}`,
+            },
+            body: `{"meta": {"name":"${name}"},"recording": { "mode": "automatic", "timeoutSeconds": 10 }}`,
+          }
+        )
+      ).json();
       const stream = await client.stream.create({
         data: {
+          cloudflareId: uid,
+          cloudflareKey: streamKey,
+          cloudflareUrl: url,
           name,
           price,
           description,

@@ -6,9 +6,10 @@ import client from "@libs/server/client";
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
     query: { id },
+    session: { user },
   } = req;
   try {
-    const stream = await client.stream.findUnique({
+    let stream = await client.stream.findUnique({
       where: {
         id: +id.toString(),
       },
@@ -30,7 +31,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (!stream) {
       return res.status(404).json({ ok: false, error: "NOT_FOUND_STREAM" });
     }
-
+    const isOwner = stream.userId === user?.id;
+    if (!isOwner) {
+      stream = Object.fromEntries(
+        Object.entries(stream).filter(
+          ([key]) => !["cloudflareUrl", "cloudflareKey"].includes(key)
+        )
+      ) as any;
+    }
     return res.status(200).json({ ok: true, stream });
   } catch (error) {
     console.log(error);
